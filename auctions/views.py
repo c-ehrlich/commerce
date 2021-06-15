@@ -14,12 +14,20 @@ def auction(request, auction_id):
         "auction": auction
     })
 
-@login_required
 def categories(request):
     return render(request, "auctions/categories.html", {
-        # "categories": CATEGORIES
-        # TODO ENUMERATE ALL CATEGORIES
+        "categories": Category.objects.all()
     })
+
+
+def category(request, category_id):
+    # category_id = request.GET.get("category.id")
+    category = Category.objects.get(pk=category_id)
+    return render(request, "auctions/category.html", {
+        "category": category,
+        "auctions": category.auctions_with_category.all()
+    })
+
 
 @login_required
 def create(request):
@@ -32,6 +40,7 @@ def create(request):
         return render(request, "auctions/auction.html", {
             "auction": auction
         })
+
 
 def index(request):
     # display a list of all the auctions
