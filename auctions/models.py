@@ -54,7 +54,6 @@ class Comment(models.Model):
         return f"{self.id}: {self.user} commented '{self.comment}' on {self.auction}"
 
 class User(AbstractUser):
-    avatar = models.URLField(default=None)
     watched_auctions = models.ManyToManyField(
         Auction,
         blank=True,
