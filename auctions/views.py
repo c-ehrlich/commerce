@@ -21,6 +21,18 @@ def categories(request):
         "categories": CATEGORIES
     })
 
+@login_required
+def create(request):
+    if request.method == "GET":
+        return render(request, "auctions/create.html")
+    if request.method == "POST":
+        print("POSTING a form")
+        # TEMP TODO
+        auction = Auction.objects.get(pk=1)
+        return render(request, "auctions/auction.html", {
+            "auction": auction
+        })
+
 def index(request):
     # display a list of all the auctions
     return render(request, "auctions/index.html", {
