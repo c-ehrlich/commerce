@@ -26,6 +26,7 @@ class Auction(models.Model):
     image = models.URLField(default=None)
     placed_time = models.DateTimeField(auto_now_add=True)
     ending_time = models.DateTimeField(default=dt.datetime.now() + dt.timedelta(days=7))
+    starting_bid = models.DecimalField(max_digits=8, decimal_places=2, default=1.00)
     category = models.CharField(
         max_length = 2,
         choices = CATEGORIES,
