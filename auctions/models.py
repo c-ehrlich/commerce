@@ -7,8 +7,8 @@ from django.db.models.deletion import CASCADE
 
 class Bid(models.Model):
     value = models.DecimalField(max_digits=8, decimal_places=2)
-    user = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name="auction_bids")
-    auction = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_bids")
+    user = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name="user_bids")
+    auction = models.ForeignKey('Auction', on_delete=models.CASCADE, related_name="auction_bids")
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

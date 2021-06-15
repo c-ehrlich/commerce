@@ -2,6 +2,7 @@
 
 {% block body %}
     <h2>Auction View</h2>
-	<img url="{{ auction.image }}" alt="auction image">
+	<img src="{{ auction.image }}" alt="auction image">
 	{{ auction }}
+	{{ current_bid }}
 {% endblock %}

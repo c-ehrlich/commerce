@@ -6,12 +6,15 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import Auction, Bid, Category, Comment, User
+import auctions.utils as utils
 
 
 def auction(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
+    current_bid = utils.current_bid(auction_id)
     return render(request, "auctions/auction.html", {
-        "auction": auction
+        "auction": auction,
+        "current_bid": current_bid
     })
 
 def categories(request):
