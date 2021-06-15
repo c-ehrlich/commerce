@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import Auction, Bid, Comment, User
+from .models import CATEGORIES
 
 
 def auction(request, auction_id):
@@ -12,6 +13,12 @@ def auction(request, auction_id):
     return render(request, "auctions/auction.html", {
         "auction": auction
     })
+
+def categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories": CATEGORIES
+    })
+
 def index(request):
     # display a list of all the auctions
     return render(request, "auctions/index.html", {
