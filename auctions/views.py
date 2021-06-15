@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -14,6 +15,7 @@ def auction(request, auction_id):
         "auction": auction
     })
 
+@login_required
 def categories(request):
     return render(request, "auctions/categories.html", {
         "categories": CATEGORIES
@@ -30,20 +32,27 @@ def login_view(request):
     if request.method == "POST":
 
         # Attempt to sign user in
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        next = request.POST.get("next")
         user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            if next != "None":
+                next = next.lstrip("/")
+                return HttpResponseRedirect(reverse(next))
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
-        return render(request, "auctions/login.html")
+        next = request.GET.get("next")
+        return render(request, "auctions/login.html", {
+            "next": next
+        })
 
 
 def logout_view(request):
