@@ -5,8 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Auction, Bid, Comment, User
-from .models import CATEGORIES
+from .models import Auction, Bid, Category, Comment, User
 
 
 def auction(request, auction_id):
@@ -18,7 +17,8 @@ def auction(request, auction_id):
 @login_required
 def categories(request):
     return render(request, "auctions/categories.html", {
-        "categories": CATEGORIES
+        # "categories": CATEGORIES
+        # TODO ENUMERATE ALL CATEGORIES
     })
 
 @login_required
