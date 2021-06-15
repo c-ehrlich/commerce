@@ -2,6 +2,11 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    <ul>
+        {% for auction in auctions %}
+            <li><a href="{% url 'auction' auction.id %}">{{ auction }}</a></li>
+        {% empty %}
+            <li>There are no auctions</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
