@@ -5,7 +5,7 @@
     {{ category }} 
 	<ul>
 		{% for auction in auctions %}
-			<li>{{ auction }}</li>
+			<li><a href="{% url 'auction' auction.id %}">{{ auction }}</a></li>
 		{% empty %}
 		    <li>empty</li>
 		{% endfor %}
