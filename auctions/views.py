@@ -1,3 +1,4 @@
+# from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -16,12 +17,13 @@ def auction(request, auction_id):
     current_bid = utils.get_current_bid(auction_id)
     
     # set auction_status ..
-    user = User.objects.get(username=request.user.username)
-    print(user)
-    print(auction.seller)
+    # make this into a function!
+    auction_status = utils.get_auction_status(request, auction_id)
+
     return render(request, "auctions/auction.html", {
         "auction": auction,
-        "current_bid": current_bid
+        "current_bid": current_bid,
+        "auction_status": auction_status
     })
 
 
