@@ -9,13 +9,21 @@ from .models import Auction, Bid, Category, Comment, User
 import auctions.utils as utils
 
 
+# view an auction
+# returns auction (auction object)
 def auction(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
-    current_bid = utils.current_bid(auction_id)
+    current_bid = utils.get_current_bid(auction_id)
+    
+    # set auction_status ..
+    user = User.objects.get(username=request.user.username)
+    print(user)
+    print(auction.seller)
     return render(request, "auctions/auction.html", {
         "auction": auction,
         "current_bid": current_bid
     })
+
 
 def categories(request):
     return render(request, "auctions/categories.html", {
