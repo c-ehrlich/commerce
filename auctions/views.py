@@ -46,6 +46,31 @@ class NewAuctionForm(forms.Form):
         )
     )
 
+
+class NewCommentForm(forms.Form):
+    comment = forms.CharField(
+        label = "Comment",
+        max_length=2000
+    )
+
+
+# adds a comment to an auction
+def add_comment(request):
+    if request.method == "POST":
+        form = NewCommentForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            next = request.POST.get('next', '/')
+            comment = Comment.objects.create(
+                comment = data["comment"],
+                timestamp = datetime.datetime.now(),
+                user = request.user,
+                auction = Auction.objects.get(pk=request.POST.get("auction_id"))
+            )
+        # return HttpResponseRedirect(reverse("auction", args=request.POST.get("auction_id")))    
+        return HttpResponseRedirect(next)
+
+
 # view an auction
 # returns auction (auction object)
 def auction(request, auction_id):
@@ -59,7 +84,8 @@ def auction(request, auction_id):
     return render(request, "auctions/auction.html", {
         "auction": auction,
         "current_bid": current_bid,
-        "auction_status": auction_status
+        "auction_status": auction_status,
+        "comment_form": NewCommentForm()
     })
 
 

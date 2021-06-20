@@ -18,7 +18,7 @@
         <input type="hidden" name="next" value="{{ request.path }}">
 
         <!-- Watchlist Button Logic -->
-        {% if auction_status.is_owner == False and request.user.is_anonymous == False %}
+        {% if auction_status.is_owner == False and user.is_authenticated %}
             {% if auction_status.is_watched %}
                 <button type="submit">Remove from Watchlist</button>
             {% else %}
@@ -29,6 +29,17 @@
         {% endif %}
         <!-- End Watchlist Button Logic -->
     </form>
+    
+    <!-- New Comment Logic -->
+    {% if user.is_authenticated %}
+        <form action="{% url 'add_comment' %}" method="POST">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="hidden" name="auction_id" value="{{ auction.id }}">
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit">Post Comment</button>
+        </form>
+    {% endif %}
 
     {% for comment in auction.auction_comments.all %}
         {{ comment }}<br>
