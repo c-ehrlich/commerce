@@ -3,4 +3,14 @@
 {% block body %}
     <h2>Create Listing</h2>
 	Create a Listing here! (form goes here, csrf, etc)
+	<form action="{% url 'create' %}" method="post">
+		{% csrf_token %}
+		<!-- <select name="category">
+			{% for category in categories %}
+				<option value="{{ category.category }}">{{ category.category }}</option>
+			{% endfor %}
+		</select> -->
+		{{ form }}
+		<input type="submit">
+	</form>
 {% endblock %}

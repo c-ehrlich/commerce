@@ -1,4 +1,5 @@
 # from datetime import datetime
+from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -8,7 +9,42 @@ from django.urls import reverse
 
 from .models import Auction, Bid, Category, Comment, User
 import auctions.utils as utils
+import datetime
+from decimal import Decimal
 
+
+# TODO break forms out into their own file
+class NewAuctionForm(forms.Form):
+    title = forms.CharField(label="Title")
+    description = forms.CharField(
+        label="Auction Text",
+        widget=forms.Textarea
+    )
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        to_field_name="category"
+    )
+    image = forms.URLField(
+        label="Image URL",
+        initial='http://'
+    )
+    starting_bid = forms.DecimalField(
+        label="Starting Bid",
+        decimal_places=2,
+        min_value=1,
+        max_value=100000
+        # default=1
+    )
+    duration = forms.ChoiceField(
+        label="Auction Duration",
+        choices = (
+            ("1", "1 Day"),
+            ("3", "3 Days"),
+            ("5", "5 Days"),
+            ("7", "7 Days"),
+            ("10", "10 Days")
+        )
+    )
 
 # view an auction
 # returns auction (auction object)
@@ -45,11 +81,20 @@ def category(request, category_id):
 @login_required
 def create(request):
     if request.method == "GET":
-        return render(request, "auctions/create.html")
+        return render(request, "auctions/create.html",{
+            "form": NewAuctionForm()
+        })
     if request.method == "POST":
         print("POSTING a form")
-        # TEMP TODO
-        auction = Auction.objects.get(pk=1)
+        # TODO make sure the auction start and end dates are in UTC
+        # (and then we convert to local timezone at runtime)
+        form = NewAuctionForm(request.POST)
+        if form.is_valid():
+            utils.create_auction(request, form.cleaned_data)
+            # display the created thing
+        else:
+            print("form not valid")
+            print(form.errors)
         return render(request, "auctions/auction.html", {
             "auction": auction
         })

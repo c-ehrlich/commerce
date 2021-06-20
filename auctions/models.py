@@ -22,7 +22,7 @@ class Category(models.Model):
     )
     
     def __str__(self):
-        return f"{self.id}: {self.category}"
+        return f"{self.category}"
 
 
 class Auction(models.Model):
