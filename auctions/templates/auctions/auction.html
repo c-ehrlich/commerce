@@ -18,7 +18,7 @@
         <input type="hidden" name="next" value="{{ request.path }}">
 
         <!-- Watchlist Button Logic -->
-        {% if auction_status.is_owner == False %}
+        {% if auction_status.is_owner == False and request.user.is_anonymous == False %}
             {% if auction_status.is_watched %}
                 <button type="submit">Remove from Watchlist</button>
             {% else %}
