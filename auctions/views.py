@@ -172,7 +172,6 @@ def toggle_watchlist(request, auction_id):
         user.watched_auctions.remove(auction)
     else:
         user.watched_auctions.add(auction)
-    # auction.category.set({data["category"]}
 
     return HttpResponseRedirect(next)
 

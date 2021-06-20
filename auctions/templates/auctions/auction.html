@@ -13,10 +13,17 @@
     <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.path }}">
-        {% if auction_status.is_watched %}
-            <button type="submit">Remove from Watchlist</button>
-        {% else %}
-            <button type="submit">Add to Watchlist</button>
+
+        <!-- Watchlist Button Logic -->
+        {% if auction_status.is_owner == False %}
+            {% if auction_status.is_watched %}
+                <button type="submit">Remove from Watchlist</button>
+            {% else %}
+                {% if auction_status.is_over == False %}
+                    <button type="submit">Add to Watchlist</button>
+                {% endif %}
+            {% endif %}
         {% endif %}
+        <!-- End Watchlist Button Logic -->
     </form>
 {% endblock %}

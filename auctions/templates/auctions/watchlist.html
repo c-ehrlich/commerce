@@ -4,7 +4,14 @@
     <h2>Watchlist</h2>
 	<ul>
 		{% for auction in watchlist %}
-			<li><a href="{% url 'auction' auction.id %}">{{ auction }}</a></li>
+			<li>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a>
+				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ request.path }}">
+					<button type="submit">Remove from Watchlist</button>
+				</form>
+			</li>
 		{% empty %}
 		    <li>empty</li>
 		{% endfor %}
