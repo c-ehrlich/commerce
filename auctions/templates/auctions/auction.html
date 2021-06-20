@@ -29,4 +29,9 @@
         {% endif %}
         <!-- End Watchlist Button Logic -->
     </form>
+
+    {% for comment in auction.auction_comments.all %}
+        {{ comment }}<br>
+        <!-- i would like to sort these by comment.timestamp -->
+    {% endfor %}
 {% endblock %}

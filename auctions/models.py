@@ -54,7 +54,7 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.id}: {self.user} commented '{self.comment}' on {self.auction}"
+        return f"{self.id}: {self.user} commented '{self.comment}' on {self.auction} at {self.timestamp}"
 
 
 class User(AbstractUser):
