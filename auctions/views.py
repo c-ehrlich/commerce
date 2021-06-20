@@ -160,3 +160,12 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+@login_required
+def watchlist(request):
+    if request.method == "GET":
+        watchlist = request.user.watched_auctions.all()
+        return render(request, "auctions/watchlist.html", {
+            "watchlist": watchlist
+        })
