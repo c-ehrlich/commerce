@@ -2,10 +2,21 @@
 
 {% block body %}
     <h2>Auction View</h2>
-	<img src="{{ auction.image }}" alt="auction image" width="300">
-	<br>
-	Auction: {{ auction }}<br>
-	Current Highest Bid: {{ current_bid }}<br>
-	{{ auction_status }}<br>
-	Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}
+    <img src="{{ auction.image }}" alt="auction image" width="300">
+    <br>
+    Auction: {{ auction }}<br>
+    Current Highest Bid: {{ current_bid }}<br>
+    {{ auction_status }}<br>
+    Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}
+
+
+    <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        {% if auction_status.is_watched %}
+            <button type="submit">Remove from Watchlist</button>
+        {% else %}
+            <button type="submit">Add to Watchlist</button>
+        {% endif %}
+    </form>
 {% endblock %}

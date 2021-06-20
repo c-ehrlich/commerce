@@ -163,6 +163,21 @@ def register(request):
 
 
 @login_required
+def toggle_watchlist(request, auction_id):
+    next = request.POST.get('next', '/')
+    auction = Auction.objects.get(pk=auction_id)
+    user = User.objects.get(username=request.user.username)
+    
+    if auction in user.watched_auctions.all():
+        user.watched_auctions.remove(auction)
+    else:
+        user.watched_auctions.add(auction)
+    # auction.category.set({data["category"]}
+
+    return HttpResponseRedirect(next)
+
+
+@login_required
 def watchlist(request):
     if request.method == "GET":
         watchlist = request.user.watched_auctions.all()
