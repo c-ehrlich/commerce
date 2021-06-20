@@ -35,6 +35,13 @@ class Auction(models.Model):
     ending_time = models.DateTimeField(default=dt.datetime.now() + dt.timedelta(days=7))
     starting_bid = models.DecimalField(max_digits=8, decimal_places=2, default=1.00)
     category = models.ManyToManyField(Category, blank=True, related_name="auctions_with_category")
+    winner = models.OneToOneField(
+        'User',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="auctions_won"
+    )
     
     def __str__(self):
         return f"{self.id}: {self.title}, placed by {self.seller.username}"

@@ -7,7 +7,10 @@
     Auction: {{ auction }}<br>
     Current Highest Bid: {{ current_bid }}<br>
     {{ auction_status }}<br>
-    Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}
+    Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}<br>
+    {% if auction.winner %}
+        winner: {{ auction.winner }}
+    {% endif %}
 
 
     <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
