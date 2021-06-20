@@ -3,9 +3,9 @@
 {% block body %}
     <h2>Auction View</h2>
 	<img src="{{ auction.image }}" alt="auction image" width="300">
-	{{ auction }}
-	{{ current_bid }}
 	<br>
-	{{ auction_status }}
-	<br> Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}
+	Auction: {{ auction }}<br>
+	Current Highest Bid: {{ current_bid }}<br>
+	{{ auction_status }}<br>
+	Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}
 {% endblock %}
