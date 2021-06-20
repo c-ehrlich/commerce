@@ -17,7 +17,7 @@ def create_auction(request, data):
             ending_time = datetime.now() + dt.timedelta(days = int(data["duration"]))
         )
         auction.category.set({data["category"]})
-        return auction.id
+        return auction
     except Exception as e:
         print(e)
         return -1

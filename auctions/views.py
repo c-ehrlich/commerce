@@ -85,19 +85,15 @@ def create(request):
             "form": NewAuctionForm()
         })
     if request.method == "POST":
-        print("POSTING a form")
         # TODO make sure the auction start and end dates are in UTC
         # (and then we convert to local timezone at runtime)
         form = NewAuctionForm(request.POST)
         if form.is_valid():
-            utils.create_auction(request, form.cleaned_data)
-            # display the created thing
+            auction = utils.create_auction(request, form.cleaned_data)
         else:
             print("form not valid")
             print(form.errors)
-        return render(request, "auctions/auction.html", {
-            "auction": auction
-        })
+        return HttpResponseRedirect(reverse("auction", args=(auction.id,)))
 
 
 def index(request):
