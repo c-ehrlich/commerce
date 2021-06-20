@@ -26,7 +26,6 @@ def create_auction(request, data):
 # returns a dictionary with additional information about an auction
 def get_auction_status(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
-    user = User.objects.get(username=request.user.username)
 
     # is_over
     # indicates whether the auction has ended
@@ -37,21 +36,27 @@ def get_auction_status(request, auction_id):
     else:
         is_over = False
 
-    # is_owner
-    # indicates whether or not the user is the owner of the auction
-    if user == auction.seller:
-        is_owner = True
-    else:
-        is_owner = False
+    try:
+        user = User.objects.get(username=request.user.username)
+        # is_owner
+        # indicates whether or not the user is the owner of the auction
+        if user == auction.seller:
+            is_owner = True
+        else:
+            is_owner = False
+        # is_watched
+        # indicates whether or not the user is currently watching the auction
+        if auction in user.watched_auctions.all():
+            is_watched = True;
+        else:
+            is_watched = False;
 
-    # is_watched
-    # indicates whether or not the user is currently watching the auction
-    if auction in user.watched_auctions.all():
-        is_watched = True;
-    else:
-        is_watched = False;
-    
-    # create uaction_status variable
+    except Exception as e:
+        is_owner = False
+        is_watched = False
+        print(e, "not logged in")  
+        
+    # create auction_status variable
     auction_status = {
         "is_over": is_over,
         "is_owner": is_owner,
