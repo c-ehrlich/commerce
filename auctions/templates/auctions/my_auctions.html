@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My Listed Auctions</h2>
+	<ul>
+		{% for auction in auctions %}
+			<li>
+				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
+				{{ auction.description }}<br>
+				{{ auction.ending_time }}<br>
+				{{ auction.current_bid }}<br>	
+			</li>
+		{% empty %}
+		    <li>empty</li>
+		{% endfor %}
+	</ul>
+	<h2>My Listed Auctions (Ended)</h2>
+	<ul>
+		{% for auction in finished_auctions %}
+		    <li>
+				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
+				{{ auction.description }}<br>
+				{{ auction.ending_time }}<br>
+				{{ auction.current_bid }}<br>	
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

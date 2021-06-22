@@ -162,7 +162,6 @@ def index(request):
     auctions = auctions.exclude(id__in=excludes)
 
     # add winning bid
-    # TODO
     for auction in auctions:
         auction.current_bid = utils.get_current_bid(auction)
 
@@ -201,6 +200,24 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+def my_auctions(request):
+    if request.method == "GET":
+        user = User.objects.get(username=request.user.username)
+        auctions = user.auctions.all()
+        excludes = []
+        for auction in auctions:
+            if utils.has_ended(auction):
+                excludes.append(auction.id)
+        finished_auctions = auctions.filter(id__in=excludes)
+        auctions = auctions.exclude(id__in=excludes)
+        for auction in itertools.chain(auctions, finished_auctions):
+            auction.current_bid = utils.get_current_bid(auction)
+        return render(request, "auctions/my_auctions.html", {
+            "auctions": auctions,
+            "finished_auctions": finished_auctions
+        })
     
 
 def place_bid(request, auction_id):
