@@ -27,12 +27,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create' %}">New Auction</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
                 </li>
                 <li>
                     <a class="nav-link" href="{% url 'watchlist' %}">Watchlist ({{ user.watched_auctions.count }})</a>

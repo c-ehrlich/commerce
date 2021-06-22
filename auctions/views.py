@@ -7,6 +7,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+import itertools
 
 from .models import Auction, Bid, Category, Comment, User
 import auctions.utils as utils
@@ -112,8 +113,12 @@ def category(request, category_id):
     # category_id = request.GET.get("category.id")
     category = Category.objects.get(pk=category_id)
     auctions = category.auctions_with_category.all()
-    for auction in auctions:
-        auction.current_bid = utils.get_current_bid(auction)
+    ended_list = []
+    for item in auctions:
+        if utils.has_ended(item):
+            ended_list.append(item.id)
+        item.current_bid = utils.get_current_bid(item)
+    auctions = auctions.exclude(id__in=ended_list)
     return render(request, "auctions/category.html", {
         "category": category,
         "auctions": auctions
@@ -215,6 +220,7 @@ def place_bid(request, auction_id):
             user = request.user,
             auction = auction
         )
+        utils.add_to_watchlist(request, auction_id)
     return HttpResponseRedirect(reverse("auction", args=(auction.id,))) 
 
 
@@ -271,9 +277,7 @@ def watchlist(request):
         watchlist_ended = watchlist.filter(id__in=ended_list)
         watchlist = watchlist.exclude(id__in=ended_list)
 
-        for item in watchlist:
-            item.current_bid = utils.get_current_bid(item)
-        for item in watchlist_ended:
+        for item in itertools.chain(watchlist, watchlist_ended):
             item.current_bid = utils.get_current_bid(item)
 
         return render(request, "auctions/watchlist.html", {

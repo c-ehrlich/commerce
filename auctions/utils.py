@@ -3,6 +3,14 @@ from datetime import datetime
 from .models import Auction, Bid, User
 
 
+# adds an item to watchlist
+def add_to_watchlist(request, auction_id):
+    auction = get_auction_from_id(auction_id)
+    user = User.objects.get(username=request.user.username)
+    if auction not in user.watched_auctions.all():
+        user.watched_auctions.add(auction)
+
+
 # closes an auction, and makes the highest bidder the winner
 # if there are no bids, there is no winner
 def close_auction_util(request, auction_id):
