@@ -73,6 +73,20 @@ def get_auction_status(request, auction_id):
     return auction_status
 
 
+# get_auction_from_id(auction_id)
+# returns an auction object
+# also does additional checks
+# currently:
+  # is the auction over? if yes, end it
+def get_auction_from_id(auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    if auction != None:
+        if has_ended(auction):
+            auction.is_closed = True
+            auction.save()
+    return auction
+
+
 # returns an object representing the current bid
 def get_current_bid(auction_id):
     auction = Auction.objects.get(pk=auction_id)

@@ -65,7 +65,7 @@ def add_comment(request):
                 comment = data["comment"],
                 timestamp = datetime.datetime.now(),
                 user = request.user,
-                auction = Auction.objects.get(pk=request.POST.get("auction_id"))
+                auction = utils.get_auction_from_id(request.POST.get("auction_id"))
             )
         # return HttpResponseRedirect(reverse("auction", args=request.POST.get("auction_id")))    
         return HttpResponseRedirect(next)
@@ -74,7 +74,7 @@ def add_comment(request):
 # view an auction
 # returns auction (auction object)
 def auction(request, auction_id):
-    auction = Auction.objects.get(pk=auction_id)
+    auction = utils.get_auction_from_id(auction_id)
     current_bid = utils.get_current_bid(auction_id)
     
     # set auction_status ..
@@ -198,7 +198,7 @@ def register(request):
 @login_required
 def toggle_watchlist(request, auction_id):
     next = request.POST.get('next', '/')
-    auction = Auction.objects.get(pk=auction_id)
+    auction = utils.get_auction_from_id(auction_id)
     user = User.objects.get(username=request.user.username)
     
     if auction in user.watched_auctions.all():
