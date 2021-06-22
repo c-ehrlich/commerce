@@ -37,6 +37,11 @@
             <button type="submit">Close Auction</button>
         </form>
     {% endif %}
+
+    <!-- Indicate if user viewing the auction is the winner -->
+    {% if auction.winner == user %}
+        You have won the auction<br>
+    {% endif %}
     
     <!-- New Comment Logic -->
     {% if user.is_authenticated %}

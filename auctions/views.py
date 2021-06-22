@@ -75,10 +75,9 @@ def add_comment(request):
 # returns auction (auction object)
 def auction(request, auction_id):
     auction = utils.get_auction_from_id(auction_id)
-    current_bid = utils.get_current_bid(auction_id)
+    current_bid = utils.get_current_bid(auction)
     
     # set auction_status ..
-    # make this into a function!
     auction_status = utils.get_auction_status(request, auction_id)
 
     return render(request, "auctions/auction.html", {

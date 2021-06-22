@@ -6,8 +6,8 @@ from .models import Auction, Bid, User
 # closes an auction, and makes the highest bidder the winner
 # if there are no bids, there is no winner
 def close_auction_util(request, auction_id):
-    auction = Auction.objects.get(pk=auction_id)
-    winning_bid = get_current_bid(auction_id)
+    auction = get_auction_from_id(auction_id)
+    winning_bid = get_current_bid(auction)
     if winning_bid != None:
         auction.winner = winning_bid.user
     auction.is_closed = True
@@ -37,7 +37,7 @@ def create_auction(request, data):
 
 # returns a dictionary with additional information about an auction
 def get_auction_status(request, auction_id):
-    auction = Auction.objects.get(pk=auction_id)
+    auction = get_auction_from_id(auction_id)
 
     # is_over
     # indicates whether the auction has ended
@@ -88,8 +88,7 @@ def get_auction_from_id(auction_id):
 
 
 # returns an object representing the current bid
-def get_current_bid(auction_id):
-    auction = Auction.objects.get(pk=auction_id)
+def get_current_bid(auction):
     bid = auction.auction_bids.order_by('-value').first()
     if bid != None:
         return bid
@@ -104,6 +103,8 @@ def get_current_bid(auction_id):
 # (using datetime in UTC, make sure the model also uses UTC)
 def has_ended(auction):
     if auction.ending_time < datetime.now().astimezone(tz=None):
+        auction.winner = get_current_bid(auction).user
+        auction.save()
         return True
     else:
         return False
