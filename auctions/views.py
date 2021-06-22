@@ -223,9 +223,17 @@ def toggle_watchlist(request, auction_id):
 @login_required
 def watchlist(request):
     if request.method == "GET":
-        watchlist = request.user.watched_auctions.all()
+        watchlist = request.user.watched_auctions.order_by("ending_time").all()
+        
+        ended_list = []
         for item in watchlist:
             item.highest_bid = utils.get_current_bid(item)
+            if utils.has_ended(item):
+                ended_list.append(item.id)
+        watchlist_ended = watchlist.filter(id__in=ended_list)
+        watchlist = watchlist.exclude(id__in=ended_list)
+
         return render(request, "auctions/watchlist.html", {
-            "watchlist": watchlist
+            "watchlist": watchlist,
+            "watchlist_ended": watchlist_ended
         })

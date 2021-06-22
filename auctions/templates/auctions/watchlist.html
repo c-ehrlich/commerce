@@ -16,4 +16,17 @@
 		    <li>empty</li>
 		{% endfor %}
 	</ul>
+	<h2>Watchlist (Ended)</h2>
+	<ul>
+		{% for auction in watchlist_ended %}
+		    <li>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a> highest bid: {{ auction.highest_bid }} 
+				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ request.path }}">
+					<button type="submit">Remove from Watchlist</button>
+				</form>
+			</li>
+		{% endfor %}
+	</ul>
 {% endblock %}
