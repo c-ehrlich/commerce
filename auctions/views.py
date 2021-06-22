@@ -158,6 +158,8 @@ def index(request):
 
     # add winning bid
     # TODO
+    for auction in auctions:
+        auction.current_bid = utils.get_current_bid(auction)
 
     return render(request, "auctions/index.html", {
         "auctions": auctions
@@ -264,11 +266,15 @@ def watchlist(request):
         
         ended_list = []
         for item in watchlist:
-            item.highest_bid = utils.get_current_bid(item)
             if utils.has_ended(item):
                 ended_list.append(item.id)
         watchlist_ended = watchlist.filter(id__in=ended_list)
         watchlist = watchlist.exclude(id__in=ended_list)
+
+        for item in watchlist:
+            item.current_bid = utils.get_current_bid(item)
+        for item in watchlist_ended:
+            item.current_bid = utils.get_current_bid(item)
 
         return render(request, "auctions/watchlist.html", {
             "watchlist": watchlist,

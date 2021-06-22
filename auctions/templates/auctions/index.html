@@ -4,7 +4,13 @@
     <h2>Active Listings</h2>
     <ul>
         {% for auction in auctions %}
-            <li><a href="{% url 'auction' auction.id %}">{{ auction }}</a></li>
+            <li>
+                <img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
+				{{ auction.description }}<br>
+				{{ auction.ending_time }}<br>
+				{{ auction.current_bid }}<br> 
+            </li>
         {% empty %}
             <li>There are no auctions</li>
         {% endfor %}

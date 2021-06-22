@@ -41,6 +41,9 @@
     {% endif %}
 
     <!-- Bid form -->
+    {{ auction_status.is_owner }}
+    {{ auction.is_closed }}
+    {{ user.is_authenticated }}
     {% if not auction_status.is_owner and auction.is_closed == False and user.is_authenticated %}
         <form action="{% url 'place_bid' auction.id %}" method="POST">
             {% csrf_token %}

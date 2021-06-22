@@ -102,7 +102,7 @@ def get_current_bid(auction):
 # TODO MAKE SURE I'M NOT DOING INCORRECT TIMEZONE MATH HERE!
 # (using datetime in UTC, make sure the model also uses UTC)
 def has_ended(auction):
-    if auction.ending_time < datetime.now().astimezone(tz=None):
+    if auction.ending_time < datetime.now().astimezone(tz=None) or auction.is_closed:
         current_bid = get_current_bid(auction)
         if current_bid != None and auction.winner != None:
             auction.winner = current_bid.user

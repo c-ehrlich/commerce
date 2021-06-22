@@ -5,7 +5,11 @@
 	<ul>
 		{% for auction in watchlist %}
 			<li>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a> highest bid: {{ auction.highest_bid }} 
+				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
+				{{ auction.description }}<br>
+				{{ auction.ending_time }}<br>
+				{{ auction.current_bid }}<br>	
 				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ request.path }}">
@@ -20,7 +24,11 @@
 	<ul>
 		{% for auction in watchlist_ended %}
 		    <li>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a> highest bid: {{ auction.highest_bid }} 
+				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
+				{{ auction.description }}<br>
+				{{ auction.ending_time }}<br>
+				{{ auction.current_bid }}<br>	
 				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ request.path }}">
