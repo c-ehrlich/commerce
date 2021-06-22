@@ -5,7 +5,7 @@
 	<ul>
 		{% for auction in watchlist %}
 			<li>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a>
+				<a href="{% url 'auction' auction.id %}">{{ auction }}</a> highest bid: {{ auction.highest_bid }}
 				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ request.path }}">

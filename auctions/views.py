@@ -212,6 +212,8 @@ def toggle_watchlist(request, auction_id):
 def watchlist(request):
     if request.method == "GET":
         watchlist = request.user.watched_auctions.all()
+        for item in watchlist:
+            item.highest_bid = utils.get_current_bid(item)
         return render(request, "auctions/watchlist.html", {
             "watchlist": watchlist
         })
