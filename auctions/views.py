@@ -111,9 +111,12 @@ def categories(request):
 def category(request, category_id):
     # category_id = request.GET.get("category.id")
     category = Category.objects.get(pk=category_id)
+    auctions = category.auctions_with_category.all()
+    for auction in auctions:
+        auction.current_bid = utils.get_current_bid(auction)
     return render(request, "auctions/category.html", {
         "category": category,
-        "auctions": category.auctions_with_category.all()
+        "auctions": auctions
     })
 
 
