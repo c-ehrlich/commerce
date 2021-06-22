@@ -1,5 +1,6 @@
 # from datetime import datetime
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -193,15 +194,13 @@ def place_bid(request, auction_id):
     bid = Decimal(request.POST.get('bid'))
     auction = utils.get_auction_from_id(auction_id)
     current_bid = utils.get_current_bid(auction)
-    increment = Decimal(0.01)
+    increment = Decimal("0.01")
     if current_bid != None:
         minimum_bid = current_bid.value + increment
     else:
         minimum_bid = auction.starting_bid + increment
-    print(f"bid: {bid}, minimum bid: {minimum_bid}")
     if bid < minimum_bid:
-        # TODO inject error message somehow
-        pass
+        messages.error(request, f"Please bid at least {minimum_bid}")
     else:
         new_bid = Bid.objects.create(
             value = bid,
