@@ -43,6 +43,15 @@
         </form>
     {% endif %}
 
+    <!-- Bid form -->
+    {% if not auction_status.is_owner and auction.is_closed == False and user.is_authenticated %}
+        <form action="{% url 'place_bid' auction.id %}" method="POST">
+            {% csrf_token %}
+            {{ place_bid_form }}
+            <button type="submit">Place Bid</button>
+        </form>
+    {% endif %}
+
     <!-- Indicate if user viewing the auction is the winner -->
     {% if auction.winner == user %}
         You have won the auction<br>

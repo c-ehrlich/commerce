@@ -47,19 +47,20 @@ class NewAuctionForm(forms.Form):
     )
 
 
+
+class NewBidForm(forms.Form):
+    bid = forms.DecimalField(
+        label="Bid",
+        decimal_places=2,
+        # min_value=1,
+        max_value=100000
+    )
+
+
 class NewCommentForm(forms.Form):
     comment = forms.CharField(
         label = "Comment",
         max_length=2000
-    )
-
-
-class PlaceBidForm(forms.Form):
-    bid = forms.DecimalField(
-        label="Bid",
-        decimal_places=2,
-        # find a way to programmatically insert min value
-        max_value=100000
     )
 
 
@@ -76,7 +77,6 @@ def add_comment(request):
                 user = request.user,
                 auction = utils.get_auction_from_id(request.POST.get("auction_id"))
             )
-        # return HttpResponseRedirect(reverse("auction", args=request.POST.get("auction_id")))    
         return HttpResponseRedirect(next)
 
 
@@ -88,12 +88,13 @@ def auction(request, auction_id):
     
     # set auction_status ..
     auction_status = utils.get_auction_status(request, auction_id)
-    
+
     return render(request, "auctions/auction.html", {
         "auction": auction,
         "current_bid": current_bid,
         "auction_status": auction_status,
-        "comment_form": NewCommentForm()
+        "comment_form": NewCommentForm(),
+        "place_bid_form": NewBidForm()
     })
 
 
@@ -189,7 +190,25 @@ def logout_view(request):
     
 
 def place_bid(request, auction_id):
-    pass
+    bid = Decimal(request.POST.get('bid'))
+    auction = utils.get_auction_from_id(auction_id)
+    current_bid = utils.get_current_bid(auction)
+    increment = Decimal(0.01)
+    if current_bid != None:
+        minimum_bid = current_bid.value + increment
+    else:
+        minimum_bid = auction.starting_bid + increment
+    print(f"bid: {bid}, minimum bid: {minimum_bid}")
+    if bid < minimum_bid:
+        # TODO inject error message somehow
+        pass
+    else:
+        new_bid = Bid.objects.create(
+            value = bid,
+            user = request.user,
+            auction = auction
+        )
+    return HttpResponseRedirect(reverse("auction", args=(auction.id,))) 
 
 
 def register(request):
