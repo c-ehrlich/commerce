@@ -3,6 +3,19 @@ from datetime import datetime
 from .models import Auction, Bid, User
 
 
+# closes an auction, and makes the highest bidder the winner
+# if there are no bids, there is no winner
+# can only be used if the auction is owned by the user making the request
+def close_auction_util(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    winning_bid = get_current_bid(auction_id)
+    if winning_bid != None:
+        auction.winner = winning_bid.user
+    auction.is_closed = True
+    auction.save()
+    return
+
+
 # creates a new auction.
 # input: cleaned_data of the create auction form
 # output: if successful -> the created auction object | if unsuccessful -> -1
@@ -69,15 +82,11 @@ def get_auction_status(request, auction_id):
 # returns an object representing the current bid
 def get_current_bid(auction_id):
     auction = Auction.objects.get(pk=auction_id)
-    current_bid = {
-        "price": auction.starting_bid,
-        "bidder": None
-    }
-    bids = auction.auction_bids.all()
-    for bid in bids:
-        if bid.value > current_bid["price"]:
-            current_bid["price"] = bid.value
-            current_bid["bidder"] = bid.user.username
-    print(f"current_bid for {auction_id}: {current_bid}")
-    return current_bid
+    bid = auction.auction_bids.order_by('-value').first()
+    if bid != None:
+        return bid
+    else:
+        # TODO maybe return something other than None?
+        # some kind of object that gives information about the starting bid?
+        return None
     

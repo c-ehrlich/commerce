@@ -105,6 +105,13 @@ def category(request, category_id):
 
 
 @login_required
+def close_auction(request, auction_id):
+    if request.method == "POST":
+        utils.close_auction_util(request, auction_id)
+        return HttpResponseRedirect(reverse("auction", args=(auction_id,)))
+
+
+@login_required
 def create(request):
     if request.method == "GET":
         return render(request, "auctions/create.html",{

@@ -6,7 +6,7 @@
     <br>
     Auction: {{ auction }}<br>
     Current Highest Bid: {{ current_bid }}<br>
-    {{ auction_status }}<br>
+    {{ auction_status }} | Closed: {{ auction.is_closed }}<br>
     Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}<br>
     {% if auction.winner %}
         winner: {{ auction.winner }}
@@ -29,6 +29,14 @@
         {% endif %}
         <!-- End Watchlist Button Logic -->
     </form>
+
+    <!-- Close Auction Button -->
+    {% if auction_status.is_owner and auction.is_closed == False %}
+        <form action="{% url 'close_auction' auction.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Close Auction</button>
+        </form>
+    {% endif %}
     
     <!-- New Comment Logic -->
     {% if user.is_authenticated %}
