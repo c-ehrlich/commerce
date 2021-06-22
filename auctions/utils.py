@@ -5,7 +5,6 @@ from .models import Auction, Bid, User
 
 # closes an auction, and makes the highest bidder the winner
 # if there are no bids, there is no winner
-# can only be used if the auction is owned by the user making the request
 def close_auction_util(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
     winning_bid = get_current_bid(auction_id)
@@ -42,12 +41,7 @@ def get_auction_status(request, auction_id):
 
     # is_over
     # indicates whether the auction has ended
-    # TODO MAKE SURE I'M NOT DOING INCORRECT TIMEZONE MATH HERE!
-    # (using datetime in UTC, make sure the model also uses UTC)
-    if auction.ending_time < datetime.now().astimezone(tz=None):
-        is_over = True
-    else:
-        is_over = False
+    is_over = has_ended(auction)
 
     try:
         user = User.objects.get(username=request.user.username)
@@ -90,3 +84,12 @@ def get_current_bid(auction_id):
         # some kind of object that gives information about the starting bid?
         return None
     
+
+# checks if an auction has ended
+# TODO MAKE SURE I'M NOT DOING INCORRECT TIMEZONE MATH HERE!
+# (using datetime in UTC, make sure the model also uses UTC)
+def has_ended(auction):
+    if auction.ending_time < datetime.now().astimezone(tz=None):
+        return True
+    else:
+        return False
