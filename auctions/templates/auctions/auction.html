@@ -3,10 +3,6 @@
 {% block body %}
     <h2>Auction View</h2>
 
-    {% if request.message %}
-        {{ request.message }}
-    {% endif %}
-
     <img src="{{ auction.image }}" alt="auction image" width="300">
     <br>
     Auction: {{ auction }}<br>
@@ -68,7 +64,7 @@
         </form>
     {% endif %}
 
-    {% for comment in auction.auction_comments.all %}
+    {% for comment in comments %}
         {{ comment }}<br>
         <!-- i would like to sort these by comment.timestamp -->
     {% endfor %}

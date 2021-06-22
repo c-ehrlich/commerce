@@ -90,8 +90,11 @@ def auction(request, auction_id):
     # set auction_status ..
     auction_status = utils.get_auction_status(request, auction_id)
 
+    comments = auction.auction_comments.order_by("-timestamp")
+
     return render(request, "auctions/auction.html", {
         "auction": auction,
+        "comments": comments,
         "current_bid": current_bid,
         "auction_status": auction_status,
         "comment_form": NewCommentForm(),
