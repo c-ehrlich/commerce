@@ -54,6 +54,15 @@ class NewCommentForm(forms.Form):
     )
 
 
+class PlaceBidForm(forms.Form):
+    bid = forms.DecimalField(
+        label="Bid",
+        decimal_places=2,
+        # find a way to programmatically insert min value
+        max_value=100000
+    )
+
+
 # adds a comment to an auction
 def add_comment(request):
     if request.method == "POST":
@@ -79,7 +88,7 @@ def auction(request, auction_id):
     
     # set auction_status ..
     auction_status = utils.get_auction_status(request, auction_id)
-
+    
     return render(request, "auctions/auction.html", {
         "auction": auction,
         "current_bid": current_bid,
