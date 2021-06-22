@@ -130,8 +130,20 @@ def create(request):
 
 def index(request):
     # display a list of all the auctions
+    auctions = Auction.objects.all() # TODO filter out auctions that have been closed
+    
+    # exclude auctions that have ended
+    excludes = []
+    for auction in auctions.all():
+        if utils.has_ended(auction):
+            excludes.append(auction.id)
+    auctions = auctions.exclude(id__in=excludes)
+
+    # add winning bid
+    # TODO
+
     return render(request, "auctions/index.html", {
-        "auctions": Auction.objects.all()
+        "auctions": auctions
     })
 
 

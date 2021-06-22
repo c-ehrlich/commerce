@@ -105,7 +105,7 @@ def has_ended(auction):
     if auction.ending_time < datetime.now().astimezone(tz=None):
         current_bid = get_current_bid(auction)
         if current_bid != None and auction.winner != None:
-            auction.winner.set(current_bid.user)
+            auction.winner = current_bid.user
         auction.save()
         return True
     else:
