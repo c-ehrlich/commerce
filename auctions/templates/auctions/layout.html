@@ -15,45 +15,58 @@
             {% endfor %}
         </ul>
         {% endif %}
-        <h1>Auctions</h1>
-        <div>
-            {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
-            {% else %}
-                Not signed in.
-            {% endif %}
-        </div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'categories' %}">Categories</a>
-            </li>
-            {% if user.is_authenticated %}
+        <div id="login-status-header">
+            <ul class="nav">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create' %}">New Auction</a>
-                </li>
-                <li>
-                    <a class="nav-link" href="{% url 'watchlist' %}">Watchlist ({{ user.watched_auctions.count }})</a>
-                </li>
-                <li>
-                    <a class="nav-link" href="{% url 'my_auctions' %}">My Auctions</a>
+                    <p class="nav-link">Signed in as <strong>{{ user.username }}</strong>.</p>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
-            {% else %}
+                {% else %}
+                <li class="nav-item">
+                    <p class="nav-link">Not signed in.</p>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Log In</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
-            {% endif %}
-        </ul>
-        <hr>
-        {% block body %}
-        {% endblock %}
+                {% endif %}
+            </ul>
+        </div>
+        <div id="below-login-status-header">
+            <div id="header-div">
+                <img src="{% static 'auctions/img/commerce-640.png' %}" id="logo-image" alt="Auctions Logo">
+                
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create' %}">New Auction</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{% url 'watchlist' %}">Watchlist ({{ user.watched_auctions.count }})</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{% url 'my_auctions' %}">My Auctions</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <hr>
+            {% block body %}
+            {% endblock %}
+        </div>
+        <div id="footer">
+            <a href="https://cs50.harvard.edu/web/2020/">CS50 web</a> · <a href="https://github.com/c-ehrlich">github.com/c-ehrlich</a>
+        </div>
     </body>
 </html>

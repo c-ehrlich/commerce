@@ -1,3 +1,127 @@
 body {
+    padding: 0px;
+    position: relative;
+    min-height: 100vh;
+    /* min-height: 100%; */
+}
+
+p, a {
+    margin: 0;
+    padding: 0;
+    color: black;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline !important;
+}
+
+#login-status-header {
+    margin-bottom: 8px;
+    background-color: ivory;
+    border-bottom: 1px solid lightgrey;
+}
+
+#login-status-header > .nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+@media (max-width: 499px) {
+    #login-status-header > .nav {
+        justify-content: space-between;
+    }
+}
+
+#below-login-status-header {
     padding: 10px;
+}
+
+#header-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#header-right-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+#logo-image {
+    width: 200px;
+    max-width: 50%;
+}
+
+#body-block-div {
+}
+
+.auction-div {
+    display: flex;
+    flex-direction: row;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.auction-right-div {
+    margin-left: 16px;
+}
+
+.auction-image {
+    width: 200px;
+    min-width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid lightgrey;
+}
+
+.auction-title {
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
+
+.auction-description {
+    color: grey;
+    font-size: 0.875em;
+    margin-bottom: 16px;
+}
+
+.auction-price {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    .auction-image {
+        width: 140px;
+        min-width: 140px;
+        height: 140px;
+    }
+}
+
+@media (max-width: 350px) {
+    #below-login-status-header {
+        padding: 6px;
+    }
+    .auction-right-div {
+        margin-left: 12px;
+    }
+    .auction-image {
+        width: 120px;
+        min-width: 120px;
+        height: 120px;
+    }
+}
+
+#footer {
+    position: absolute;
+    bottom: 0; right: 0; left: 0;
+    padding: 8px;
+    margin: 0;
+    width: 100%;
+    background-color: ivory;
+    border-top: 1px solid lightgrey;
+    font-size: 0.75em;
 }

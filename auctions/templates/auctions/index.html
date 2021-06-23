@@ -1,18 +1,23 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+<div id="body-block-div">
     <h2>Active Listings</h2>
-    <ul>
-        {% for auction in auctions %}
-            <li>
-                <img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
-				{{ auction.description }}<br>
-				{{ auction.ending_time }}<br>
-				{{ auction.current_bid }}<br> 
-            </li>
-        {% empty %}
-            <li>There are no auctions</li>
-        {% endfor %}
-    </ul>
+    {% for auction in auctions %}
+    <div class="auction-div">
+        <a href="{% url 'auction' auction.id %}">
+            <img src="{{ auction.image }}" alt="{{ auction }}" class="auction-image"><br>
+        </a>
+        <div class="auction-right-div">
+            <a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
+            <p class="auction-description">{{ auction.description }}</p>
+            <p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+            <p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }}</p>
+        </div>
+    </div>
+    <hr>
+    {% empty %}
+        There are no auctions
+    {% endfor %}
+</div>
 {% endblock %}
