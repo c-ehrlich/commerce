@@ -1,44 +1,46 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+<!-- <div id="body-block-div"> -->
     <h2>Create Listing</h2>
 	<form action="{% url 'create' %}" method="post" id="create-auction-form">
 		{% csrf_token %}
 		{{ form.non_field_errors }}
 		<div class="formFieldWrapper">
 			{{ form.title.errors }}
-			<label for="{{ form.title.id_for_label }}">Title: </label>
+			<label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
 			{{ form.title }}
 		</div>
 		<div class="formFieldWrapper">
 			{{ form.description.errors }}
-			<label for="{{ form.description.id_for_label }}">Description: </label>
+			<label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
 			{{ form.description }}
 		</div>
 		<div class="formGroupOfTwo">
 			<div class="formFieldWrapper">
 				{{ form.image.errors }}
-				<label for="{{ form.image.id_for_label }}">Image: </label>
+				<label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
 				{{ form.image }}
 			</div>
 			<div class="formFieldWrapper">
-				{{ form.category.errors }}
-				<label for="{{ form.category.id_for_label }}">Category: </label>
-				{{ form.category }}
+				{{ form.starting_bid.errors }}
+				<label for="{{ form.starting_bid.id_for_label }}">{{ form.starting_bid.label }}</label>
+				{{ form.starting_bid }}
 			</div>
 		</div>
 		<div class="formGroupOfTwo">
 			<div class="formFieldWrapper">
-				{{ form.starting_bid.errors }}
-				<label for="{{ form.starting_bid.id_for_label }}">Starting Bid: </label>
-				{{ form.starting_bid }}
+				{{ form.category.errors }}
+				<label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+				{{ form.category }}
 			</div>
 			<div class="formFieldWrapper">
 				{{ form.duration.errors }}
-				<label for="{{ form.duration.id_for_label }}">Duration: </label>
+				<label for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
 				{{ form.duration }}
 			</div>
 		</div>
 		<input type="submit" id="create-auction-submit-button">
 	</form>
+<!-- </div> -->
 {% endblock %}

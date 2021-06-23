@@ -32,7 +32,7 @@ class NewAuctionForm(forms.Form):
         initial='http://'
     )
     starting_bid = forms.DecimalField(
-        label="Starting Bid",
+        label="Starting Bid (EUR)",
         decimal_places=2,
         min_value=1,
         max_value=100000

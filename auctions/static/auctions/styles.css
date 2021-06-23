@@ -1,3 +1,4 @@
+html { width: 100% !important; }
 body {
     padding: 0px;
     position: relative;
@@ -59,6 +60,10 @@ label {
 }
 
 #body-block-div {
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .auction-div {
@@ -145,12 +150,18 @@ label {
     flex-direction: column;
     width: 100%;
 }
+.formFieldWrapper > select {
+    padding: 8px;
+}
+.formFieldWrapper > input {
+    padding: 4px;
+}
 
 .formGroupOfTwo {
     display: flex;
     flex-direction: column;
 }
-@media (max-width: 499px) {
+@media (min-width: 500px) {
     .formGroupOfTwo {
         flex-direction: row;
         gap: 16px;
@@ -160,6 +171,7 @@ label {
 #create-auction-submit-button {
     margin-top: 16px;
     margin-bottom: 32px;
+    padding: 8px;
 }
 /* .formGroupOfTwo > .formFieldWrapper {
     width: 100%;
