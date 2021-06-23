@@ -1,72 +1,102 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Auction View</h2>
-
-    <img src="{{ auction.image }}" alt="auction image" width="300">
-    <br>
-    Auction: {{ auction }}<br>
-    Description: {{ auction.description }}<br>
-    Current Highest Bid: {{ current_bid }}<br>
-    {{ auction_status }} | Closed: {{ auction.is_closed }}<br>
-    Placed {{ auction.placed_time }} | Ending {{ auction.ending_time }}<br>
-    {% if auction.winner %}
-        winner: {{ auction.winner }}
-    {% endif %}
-
-
-    <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.path }}">
-
-        <!-- Watchlist Button Logic -->
-        {% if auction_status.is_owner == False and user.is_authenticated %}
-            {% if auction_status.is_watched %}
-                <button type="submit">Remove from Watchlist</button>
-            {% else %}
-                {% if auction_status.is_over == False %}
-                    <button type="submit">Add to Watchlist</button>
+    <div id="auction-item-div">
+        <div id="auction-item-top-div">
+            <img src="{{ auction.image }}" alt="auction image" width="300" id="auction-image-main">
+            <div id="auction-item-div-right">
+                <p id="auction-page-title">{{ auction.title }}</p>
+                <hr>
+                <p id="auction-page-description">{{ auction.description }}</p>
+                <p id="auction-page-ending">Ending: {{ auction.ending_time }}</p>
+                <hr>
+                {% if auction.auction_bids.count != 0 %}
+                    <p class="auction-page-label">Current Bid:</p>
+                    <p id="auction-page-current-bid-amount">
+                        EUR {{ current_bid.value }}
+                    </p>
+                {% else %}
+                    <p class="auction-page-label">Starting Bid:</p>
+                    <p id="auction-page-current-bid-amount">
+                        EUR {{ auction.starting_bid }} 
+                    </p>
                 {% endif %}
-            {% endif %}
+                <p class="auction-page-label">[ {{ auction.auction_bids.count }} Bids ]</p>
+                <hr>
+                {% if auction.winner %}
+                    winner: {{ auction.winner }}
+                {% endif %}
+
+
+                <!-- Close Auction Button -->
+                {% if auction_status.is_owner and auction.is_closed == False %}
+                    <form action="{% url 'close_auction' auction.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Close Auction</button>
+                    </form>
+                {% endif %}
+
+                <!-- Bid form -->
+                {% if not auction_status.is_owner and auction.is_closed == False and user.is_authenticated %}
+                    <form action="{% url 'place_bid' auction.id %}" method="POST">
+                        <div class="formFieldWrapper">
+                            {% csrf_token %}
+                            <label for="{{ place_bid_form.bid.id_for_label }}">{{ place_bid_form.bid.label }}</label>
+                            {{ place_bid_form.bid }}
+                            <!-- if user is current winning, say that -->
+                            <!-- otherwise say you need to bid at least x -->
+                            <p>
+                            {% if current_bid.user == user %}
+                                <p class="auction-page-label">You are currently the highest bidder!</p>
+                            {% else %}
+                                <p class="auction-page-label">Please bid at least EUR {{ minimum_bid }} to become the highest bidder.</p>
+                            {% endif %}
+                            </p>
+                            <button type="submit" class="submit-button">Place Bid</button>
+                        </div>
+                    </form>
+                {% endif %}
+
+                <!-- Indicate if user viewing the auction is the winner -->
+                {% if auction.winner == user %}
+                    You have won the auction<br>
+                {% endif %}
+                
+                
+                <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+
+                    <!-- Watchlist Button Logic -->
+                    {% if auction_status.is_owner == False and user.is_authenticated %}
+                        {% if auction_status.is_watched %}
+                            <button type="submit">Remove from Watchlist</button>
+                        {% else %}
+                            {% if auction_status.is_over == False %}
+                                <button type="submit">Add to Watchlist</button>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    <!-- End Watchlist Button Logic -->
+                </form>
+            </div>
+        </div>
+        <hr style="margin-inline-start: 0; margin-inline-end: 0;">
+        <!-- New Comment Logic -->
+        {% if user.is_authenticated %}
+            <form action="{% url 'add_comment' %}" method="POST">
+                {% csrf_token %}
+                {{ comment_form }}
+                <input type="hidden" name="auction_id" value="{{ auction.id }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit">Post Comment</button>
+            </form>
         {% endif %}
-        <!-- End Watchlist Button Logic -->
-    </form>
 
-    <!-- Close Auction Button -->
-    {% if auction_status.is_owner and auction.is_closed == False %}
-        <form action="{% url 'close_auction' auction.id %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Close Auction</button>
-        </form>
-    {% endif %}
-
-    <!-- Bid form -->
-    {% if not auction_status.is_owner and auction.is_closed == False and user.is_authenticated %}
-        <form action="{% url 'place_bid' auction.id %}" method="POST">
-            {% csrf_token %}
-            {{ place_bid_form }}
-            <button type="submit">Place Bid</button>
-        </form>
-    {% endif %}
-
-    <!-- Indicate if user viewing the auction is the winner -->
-    {% if auction.winner == user %}
-        You have won the auction<br>
-    {% endif %}
-    
-    <!-- New Comment Logic -->
-    {% if user.is_authenticated %}
-        <form action="{% url 'add_comment' %}" method="POST">
-            {% csrf_token %}
-            {{ comment_form }}
-            <input type="hidden" name="auction_id" value="{{ auction.id }}">
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit">Post Comment</button>
-        </form>
-    {% endif %}
-
-    {% for comment in comments %}
-        {{ comment }}<br>
-        <!-- i would like to sort these by comment.timestamp -->
-    {% endfor %}
+        {% for comment in comments %}
+            {{ comment }}<br>
+            <!-- i would like to sort these by comment.timestamp -->
+        {% endfor %}
+        {{ auction_status }} | Closed: {{ auction.is_closed }}<br>
+    </div>
 {% endblock %}

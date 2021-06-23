@@ -85,6 +85,11 @@ def add_comment(request):
 def auction(request, auction_id):
     auction = utils.get_auction_from_id(auction_id)
     current_bid = utils.get_current_bid(auction)
+
+    if current_bid != None:
+        minimum_bid = Decimal(current_bid.value) + Decimal(1)
+    else:
+        minimum_bid = Decimal(auction.starting_bid)
     
     # set auction_status ..
     auction_status = utils.get_auction_status(request, auction_id)
@@ -95,6 +100,7 @@ def auction(request, auction_id):
         "auction": auction,
         "comments": comments,
         "current_bid": current_bid,
+        "minimum_bid": minimum_bid,
         "auction_status": auction_status,
         "comment_form": NewCommentForm(),
         "place_bid_form": NewBidForm()
@@ -222,7 +228,7 @@ def place_bid(request, auction_id):
     bid = Decimal(request.POST.get('bid'))
     auction = utils.get_auction_from_id(auction_id)
     current_bid = utils.get_current_bid(auction)
-    increment = Decimal("0.01")
+    increment = Decimal("1.00")
     if current_bid != None:
         minimum_bid = current_bid.value + increment
     else:

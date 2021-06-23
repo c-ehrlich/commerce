@@ -139,6 +139,32 @@ label {
     font-size: 0.75em;
 }
 
+/* Buttons */
+.submit-button {
+    padding: 8px;
+    margin: 8px 0 8px 0;
+    background-color: slateblue;
+    color: white;
+    font-weight: bold;
+}
+.submit-button:hover {
+    background-color: darkblue;
+}
+
+.add-to-watchlist-button {
+
+}
+.add-to-watchlist-button:hover {
+
+}
+
+.remove-from-watchlist-button {
+
+}
+.remove-from-watchlist-button:hover {
+
+}
+
 /* create.html */
 #create-auction-form {
     display: flex;
@@ -173,6 +199,56 @@ label {
     margin-bottom: 32px;
     padding: 8px;
 }
-/* .formGroupOfTwo > .formFieldWrapper {
-    width: 100%;
-} */
+
+/* /auction.html */
+#auction-item-div {
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 500px) {
+    #auction-item-div {
+        border: 1px solid lightgrey;
+        padding: 16px;
+        border-radius: 8px;
+        margin: 8px;
+        -webkit-box-shadow: 0px 0px 12px -1px rgba(0,0,0,0.66);
+        box-shadow: 0px 0px 12px -1px rgba(0,0,0,0.66);
+    }
+}
+
+#auction-item-top-div {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+@media (max-width: 499px) {
+    #auction-item-top-div {
+        flex-direction: column;
+    }
+}
+
+#auction-image-main {
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+}
+@media (max-width: 499px) {
+    #auction-image-main {
+        width: 100%;
+        height: auto;
+        border: none;
+    }
+}
+#auction-page-title {
+    font-size: 2em;
+}
+.auction-page-label {
+    color: grey;
+    font-size: 0.75em;
+}
+#auction-page-current-bid-amount {
+    font-weight: bold;
+    font-size: 1.5em;
+}
