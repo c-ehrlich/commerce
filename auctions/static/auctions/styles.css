@@ -15,6 +15,11 @@ a:hover {
     text-decoration: underline !important;
 }
 
+label {
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
 #login-status-header {
     margin-bottom: 8px;
     background-color: ivory;
@@ -115,6 +120,9 @@ a:hover {
     }
 }
 
+#footer-spacing-div {
+    min-height: 64px;
+}
 #footer {
     position: absolute;
     bottom: 0; right: 0; left: 0;
@@ -125,3 +133,34 @@ a:hover {
     border-top: 1px solid lightgrey;
     font-size: 0.75em;
 }
+
+/* create.html */
+#create-auction-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formFieldWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.formGroupOfTwo {
+    display: flex;
+    flex-direction: column;
+}
+@media (max-width: 499px) {
+    .formGroupOfTwo {
+        flex-direction: row;
+        gap: 16px;
+    }
+}
+
+#create-auction-submit-button {
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+/* .formGroupOfTwo > .formFieldWrapper {
+    width: 100%;
+} */

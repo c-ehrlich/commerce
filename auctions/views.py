@@ -24,6 +24,7 @@ class NewAuctionForm(forms.Form):
     )
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
+        label="Category",
         to_field_name="category"
     )
     image = forms.URLField(
@@ -35,7 +36,6 @@ class NewAuctionForm(forms.Form):
         decimal_places=2,
         min_value=1,
         max_value=100000
-        # default=1
     )
     duration = forms.ChoiceField(
         label="Auction Duration",
@@ -49,12 +49,10 @@ class NewAuctionForm(forms.Form):
     )
 
 
-
 class NewBidForm(forms.Form):
     bid = forms.DecimalField(
         label="Bid",
         decimal_places=2,
-        # min_value=1,
         max_value=100000
     )
 
