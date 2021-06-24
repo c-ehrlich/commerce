@@ -73,7 +73,7 @@ def add_comment(request):
             next = request.POST.get('next', '/')
             comment = Comment.objects.create(
                 comment = data["comment"],
-                timestamp = datetime.datetime.now(),
+                timestamp = datetime.datetime.utcnow(),
                 user = request.user,
                 auction = utils.get_auction_from_id(request.POST.get("auction_id"))
             )

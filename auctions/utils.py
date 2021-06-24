@@ -34,7 +34,7 @@ def create_auction(request, data):
             description = data["description"],
             image = data["image"], 
             starting_bid = data["starting_bid"],
-            ending_time = datetime.now() + dt.timedelta(days = int(data["duration"]))
+            ending_time = datetime.utcnow() + dt.timedelta(days = int(data["duration"]))
         )
         auction.category.set({data["category"]})
         return auction
@@ -110,7 +110,7 @@ def get_current_bid(auction):
 # TODO MAKE SURE I'M NOT DOING INCORRECT TIMEZONE MATH HERE!
 # (using datetime in UTC, make sure the model also uses UTC)
 def has_ended(auction):
-    if auction.ending_time < datetime.now().astimezone(tz=None) or auction.is_closed:
+    if auction.ending_time < datetime.utcnow().astimezone(tz=None) or auction.is_closed:
         current_bid = get_current_bid(auction)
         if current_bid != None and auction.winner != None:
             auction.winner = current_bid.user
