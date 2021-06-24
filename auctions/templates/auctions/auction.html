@@ -8,7 +8,7 @@
                 <p id="auction-page-title">{{ auction.title }}</p>
                 <hr>
                 <p id="auction-page-description">{{ auction.description }}</p>
-                <p id="auction-page-ending">Ending: {{ auction.ending_time }}</p>
+                <p id="auction-page-ending">Ending: {{ auction.ending_time }} (UTC)</p>
                 <hr>
                 {% if auction.auction_bids.count != 0 %}
                     <p class="auction-page-label">Current Bid:</p>
@@ -70,10 +70,14 @@
                     <!-- Watchlist Button Logic -->
                     {% if auction_status.is_owner == False and user.is_authenticated %}
                         {% if auction_status.is_watched %}
-                            <button type="submit">Remove from Watchlist</button>
+                            <div class="formFieldWrapper">
+                                <button type="submit" class="watchlist-add">Remove from Watchlist</button>
+                            </div>
                         {% else %}
                             {% if auction_status.is_over == False %}
-                                <button type="submit">Add to Watchlist</button>
+                                <div class="formFieldWrapper">
+                                    <button type="submit" class="watchlist-remove">Add to Watchlist</button>
+                                </div>
                             {% endif %}
                         {% endif %}
                     {% endif %}
@@ -86,16 +90,24 @@
         {% if user.is_authenticated %}
             <form action="{% url 'add_comment' %}" method="POST">
                 {% csrf_token %}
-                {{ comment_form }}
-                <input type="hidden" name="auction_id" value="{{ auction.id }}">
-                <input type="hidden" name="next" value="{{ request.path }}">
-                <button type="submit">Post Comment</button>
+                <div class="formFieldWrapper w600">
+                    <label for="{{ comment_form.comment.id_for_label}}">{{ comment_form.comment.label }}</label>
+                    {{ comment_form.comment }}
+                    <input type="hidden" name="auction_id" value="{{ auction.id }}">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit">Post Comment</button>
+                </div>
             </form>
         {% endif %}
 
         {% for comment in comments %}
-            {{ comment }}<br>
-            <!-- i would like to sort these by comment.timestamp -->
+        <div>
+            <div class="comment-header">
+                <p class="auction-comment-user">{{ comment.user }}</p>
+                <p class="auction-comment-timestamp">{{ comment.timestamp }} (UTC)</p>
+            </div>
+            <p class="auction-comment-comment">{{ comment.comment }}</p>
+        </div>
         {% endfor %}
         {{ auction_status }} | Closed: {{ auction.is_closed }}<br>
     </div>

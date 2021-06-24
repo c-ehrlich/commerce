@@ -252,3 +252,36 @@ label {
     font-weight: bold;
     font-size: 1.5em;
 }
+.auction-comment-user {
+    font-size:1.125em;
+    font-weight: bold;
+}
+.auction-comment-timestamp {
+    color: grey;
+    font-size: 0.75em;
+}
+.auction-comment-comment {
+    margin-bottom: 16px;
+}
+.comment-header {
+    display: flex;
+    flex-direction: column;
+    /* gap: 16px; */
+    /* align-items: center; */
+}
+
+.watchlist-add,
+.watchlist-remove {
+    padding: 8px;
+}
+.watchlist-add:hover {
+    background-color: firebrick;
+    color: white;
+}
+.watchlist-remove:hover {
+    background-color: mediumseagreen;
+}
+
+.w600 {
+    width: 600px;
+}
