@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<!-- <div id="body-block-div"> -->
+<div id="body-block-div">
     <h2>Create Listing</h2>
 	<form action="{% url 'create' %}" method="post" id="create-auction-form">
 		{% csrf_token %}
@@ -42,5 +42,5 @@
 		</div>
 		<input type="submit" id="create-auction-submit-button">
 	</form>
-<!-- </div> -->
+</div>
 {% endblock %}

@@ -121,8 +121,9 @@ def category(request, category_id):
     for item in auctions:
         if utils.has_ended(item):
             ended_list.append(item.id)
-        item.current_bid = utils.get_current_bid(item)
     auctions = auctions.exclude(id__in=ended_list)
+    for item in auctions:
+        item.current_bid = utils.get_current_bid(item)
     return render(request, "auctions/category.html", {
         "category": category,
         "auctions": auctions
@@ -218,6 +219,7 @@ def my_auctions(request):
         auctions = auctions.exclude(id__in=excludes)
         for auction in itertools.chain(auctions, finished_auctions):
             auction.current_bid = utils.get_current_bid(auction)
+            print(f"TEST {auction.current_bid}")
         return render(request, "auctions/my_auctions.html", {
             "auctions": auctions,
             "finished_auctions": finished_auctions

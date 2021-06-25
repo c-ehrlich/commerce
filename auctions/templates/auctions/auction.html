@@ -8,7 +8,7 @@
                 <p id="auction-page-title">{{ auction.title }}</p>
                 <hr>
                 <p id="auction-page-description">{{ auction.description }}</p>
-                <p id="auction-page-ending">Ending: {{ auction.ending_time }} (UTC)</p>
+                <p id="auction-page-ending">Ending: {{ auction.ending_time }} UTC</p>
                 <hr>
                 {% if auction.auction_bids.count != 0 %}
                     <p class="auction-page-label">Current Bid:</p>
@@ -103,7 +103,7 @@
         <div>
             <div class="comment-header">
                 <p class="auction-comment-user">{{ comment.user }}</p>
-                <p class="auction-comment-timestamp">{{ comment.timestamp }} (UTC)</p>
+                <p class="auction-comment-timestamp">{{ comment.timestamp }} UTC</p>
             </div>
             <p class="auction-comment-comment">{{ comment.comment }}</p>
         </div>

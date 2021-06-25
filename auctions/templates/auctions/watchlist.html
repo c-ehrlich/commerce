@@ -6,13 +6,17 @@
 		{% for auction in watchlist %}
 		<div class="auction-div">
 			<a href="{% url 'auction' auction.id %}">
-				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+				<img src="{{ auction.image }}" alt="{{ auction }}" class="auction-image">
 			</a>
 			<div class="auction-right-div">
 				<a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
 				<p class="auction-description">{{ auction.description }}</p>
-				<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
-				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }}</p>
+				{% if auction.current_bid != None %}
+					<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+				{% else %}
+					<p class="auction-price">EUR {{ auction.starting_bid }}</p>
+				{% endif %}
+				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }} UTC</p>
 				<button type="submit" class="watchlist-add">Remove from Watchlist</button>
 			</div>
 		</div>
@@ -24,12 +28,16 @@
 	{% for auction in watchlist_ended %}
 	<div class="auction-div">
 		<a href="{% url 'auction' auction.id %}">
-			<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+			<img src="{{ auction.image }}" alt="{{ auction }}" class="auction-image">
 		</a>
 		<div class="auction-right-div">
 			<a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
 			<p class="auction-description">{{ auction.description }}</p>
-			<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+			{% if auction.current_bid != None %}
+				<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+			{% else %}
+				<p class="auction-price">EUR {{ auction.starting_bid }}</p>
+			{% endif %}
 			{% if auction.winner != None %}
 				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Winner: {{ auction.winner }}</p>
 			{% else %}

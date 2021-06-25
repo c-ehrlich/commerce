@@ -12,7 +12,7 @@
             <a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
             <p class="auction-description">{{ auction.description }}</p>
             <p class="auction-price">EUR {{ auction.current_bid.value }}</p>
-            <p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }}</p>
+            <p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }} UTC</p>
         </div>
     </div>
     <hr>
