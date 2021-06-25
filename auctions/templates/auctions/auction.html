@@ -24,7 +24,11 @@
                 <p class="auction-page-label">[ {{ auction.auction_bids.count }} Bids ]</p>
                 <hr>
                 {% if auction.winner %}
-                    winner: {{ auction.winner }}
+                    {% if auction.winner == user %}
+                        You have won this auction!
+                    {% else %}
+                        winner: {{ auction.winner }}
+                    {% endif %}
                 {% endif %}
 
 
@@ -57,11 +61,6 @@
                     </form>
                 {% endif %}
 
-                <!-- Indicate if user viewing the auction is the winner -->
-                {% if auction.winner == user %}
-                    You have won the auction<br>
-                {% endif %}
-                
                 
                 <form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
                     {% csrf_token %}

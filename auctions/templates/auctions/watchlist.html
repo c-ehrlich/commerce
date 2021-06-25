@@ -1,40 +1,46 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+<div id="body-block-div">
     <h2>Watchlist</h2>
-	<ul>
 		{% for auction in watchlist %}
-			<li>
+		<div class="auction-div">
+			<a href="{% url 'auction' auction.id %}">
 				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
-				{{ auction.description }}<br>
-				{{ auction.ending_time }}<br>
-				{{ auction.current_bid }}<br>	
-				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ request.path }}">
-					<button type="submit">Remove from Watchlist</button>
-				</form>
-			</li>
+			</a>
+			<div class="auction-right-div">
+				<a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
+				<p class="auction-description">{{ auction.description }}</p>
+				<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Ending: {{ auction.ending_time }}</p>
+				<button type="submit" class="watchlist-add">Remove from Watchlist</button>
+			</div>
+		</div>
+		<hr>
 		{% empty %}
-		    <li>empty</li>
+		    (empty)
 		{% endfor %}
-	</ul>
 	<h2>Watchlist (Ended)</h2>
-	<ul>
-		{% for auction in watchlist_ended %}
-		    <li>
-				<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
-				<a href="{% url 'auction' auction.id %}">{{ auction }}</a><br>
-				{{ auction.description }}<br>
-				{{ auction.ending_time }}<br>
-				{{ auction.current_bid }}<br>	
-				<form action="{% url 'toggle_watchlist' auction.id %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ request.path }}">
-					<button type="submit">Remove from Watchlist</button>
-				</form>
-			</li>
-		{% endfor %}
-	</ul>
+	{% for auction in watchlist_ended %}
+	<div class="auction-div">
+		<a href="{% url 'auction' auction.id %}">
+			<img src="{{ auction.image }}" alt="{{ auction }}" width=150><br>
+		</a>
+		<div class="auction-right-div">
+			<a href="{% url 'auction' auction.id %}" class="auction-title">{{ auction.title }}</a>
+			<p class="auction-description">{{ auction.description }}</p>
+			<p class="auction-price">EUR {{ auction.current_bid.value }}</p>
+			{% if auction.winner != None %}
+				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Winner: {{ auction.winner }}</p>
+			{% else %}
+				<p class="auction-description">{{ auction.auction_bids.count }} Bids · Item did not sell</p>
+			{% endif %}
+			<button type="submit" class="watchlist-add">Remove from Watchlist</button>
+		</div>
+	</div>
+	<hr>	
+	{% empty %}
+		(empty)
+	{% endfor %}
+</div>
 {% endblock %}
