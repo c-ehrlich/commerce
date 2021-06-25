@@ -59,7 +59,10 @@ class NewBidForm(forms.Form):
 
 class NewCommentForm(forms.Form):
     comment = forms.CharField(
-        label = "Comment",
+        widget=forms.Textarea(attrs={
+            'rows':3
+        }),
+        label = "New Comment",
         max_length=2000
     )
 

@@ -282,6 +282,20 @@ label {
     background-color: mediumseagreen;
 }
 
-.w600 {
-    width: 600px;
+.w400max {
+    max-width: 400px;
+}
+@media (max-width: 499px) {
+    .w400max {
+        max-width: 100%;
+    }
+}
+
+.post-comment-button {
+    padding: 8px;
+    margin: 8px 0 8px 0;
+    font-weight: bold; 
+}
+.post-comment-button:hover {
+    background-color: lightgrey; 
 }
