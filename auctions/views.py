@@ -124,7 +124,7 @@ def category(request, category_id):
     for item in auctions:
         if utils.has_ended(item):
             ended_list.append(item.id)
-    auctions = auctions.exclude(id__in=ended_list)
+    auctions = auctions.exclude(id__in=ended_list).order_by("ending_time")
     for item in auctions:
         item.current_bid = utils.get_current_bid(item)
     return render(request, "auctions/category.html", {
@@ -167,7 +167,7 @@ def index(request):
     for auction in auctions.all():
         if utils.has_ended(auction):
             excludes.append(auction.id)
-    auctions = auctions.exclude(id__in=excludes)
+    auctions = auctions.exclude(id__in=excludes).order_by("ending_time").all()
 
     # add winning bid
     for auction in auctions:
@@ -190,7 +190,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            if next != "None":
+            if next != "None" and next != "":
                 next = next.lstrip("/")
                 return HttpResponseRedirect(reverse(next))
             return HttpResponseRedirect(reverse("index"))
@@ -218,8 +218,8 @@ def my_auctions(request):
         for auction in auctions:
             if utils.has_ended(auction):
                 excludes.append(auction.id)
-        finished_auctions = auctions.filter(id__in=excludes)
-        auctions = auctions.exclude(id__in=excludes)
+        finished_auctions = auctions.filter(id__in=excludes).order_by("ending_time")
+        auctions = auctions.exclude(id__in=excludes).order_by("ending_time")
         for auction in itertools.chain(auctions, finished_auctions):
             auction.current_bid = utils.get_current_bid(auction)
             print(f"TEST {auction.current_bid}")

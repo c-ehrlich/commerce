@@ -6,8 +6,10 @@
             <img src="{{ auction.image }}" alt="auction image" width="300" id="auction-image-main">
             <div id="auction-item-div-right">
                 <p id="auction-page-title">{{ auction.title }}</p>
+                <p class="auction-page-label">Placed by {{ auction.seller }}</p>
                 <hr>
                 <p id="auction-page-description">{{ auction.description }}</p>
+                <hr>
                 <p id="auction-page-ending">Ending: {{ auction.ending_time }} UTC</p>
                 <hr>
                 {% if auction.auction_bids.count != 0 %}
@@ -36,7 +38,7 @@
                 {% if auction_status.is_owner and auction.is_closed == False %}
                     <form action="{% url 'close_auction' auction.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit">Close Auction</button>
+                        <button type="submit" class="watchlist-add" style="font-weight: bold">Close Auction</button>
                     </form>
                 {% endif %}
 
@@ -108,6 +110,8 @@
             </div>
             <p class="auction-comment-comment">{{ comment.comment }}</p>
         </div>
+        {% empty %}
+        This article doesn't have any comments yet.
         {% endfor %}
     </div>
 {% endblock %}
